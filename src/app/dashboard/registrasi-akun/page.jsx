@@ -157,7 +157,7 @@ const RegistrasiAkun = () => {
                     }}
                   >
                     <option aria-label='None' value='' />
-                    <option value={'KARYAWAN'}>Karyawan</option>
+                    <option value={'ANGGOTA'}>Anggota</option>
                     <option value={'ADMIN'}>Admin</option>
                   </Select>
                 </FormControl>
