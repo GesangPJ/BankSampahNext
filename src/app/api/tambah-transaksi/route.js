@@ -1,0 +1,61 @@
+// Tambah Kasbon API. Lokasi : /src/app/api/tambah-kasbon/route.js
+
+import { NextResponse } from 'next/server'
+
+import { getToken } from 'next-auth/jwt'
+
+import prisma from '@/app/lib/prisma'
+
+export const POST = async (req) => {
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+
+  console.log('Token:', token)
+
+  if (!token) {
+    console.log('Unauthorized Access : API Tambah Kasbon')
+
+    return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
+  }
+
+  try {
+    const { userId, idjenissampah, hargajenissampah, berat, adminId, keterangan } = await req.json()
+
+    if (!userId || !idjenissampah || !hargajenissampah || !berat || !adminId) {
+      return NextResponse.json({ error: "Semua bidang harus diisi." }, { status: 400 });
+    }
+
+    // Ambil tanggal dan waktu saat ini
+    const now = new Date()
+    const createdAt = now.toISOString()
+
+    const HitungTotalHarga = hargajenissampah * berat
+
+    try {
+      const transaksi = await prisma.transaksi.create({
+        data: {
+          userId,
+          adminId,
+          berat,
+          totalharga: HitungTotalHarga,
+          idjenissampah,
+          keterangantransaksi: keterangan,
+          metode,
+          createdAt,
+          updatedAt: createdAt,
+        },
+      })
+
+      console.log('Transaksi dibuat :', transaksi)
+
+      return NextResponse.json(transaksi, { status: 201 })
+    } catch (error) {
+      console.error('Error membuat transaksi:', error)
+
+      return NextResponse.json({ error: "Transaksi sudah ada" }, { status: 400 })
+    }
+  } catch (error) {
+    console.error('Error membuat transaksi:', error)
+
+    return NextResponse.json({ error: "Terjadi kesalahan saat memproses permintaan." }, { status: 500 })
+  }
+}

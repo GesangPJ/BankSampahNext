@@ -1,0 +1,86 @@
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  name           String?
+  email          String    @unique
+  password       String
+  userType       String?
+  accounts       Account[]
+  sessions       Session[]
+  TransaksisAsUser  Transaksi[]  @relation("TransaksiUser")
+  TransaksisAsAdmin Transaksi[]  @relation("TransaksiAdmin")
+}
+
+model Transaksi {
+  id                  Int         @id @default(autoincrement())
+  userId              Int
+  adminId             Int?
+  idjenissampah       Int
+  hargasampah         Int
+  berat               Decimal
+  totalharga          Decimal
+  keterangantransaksi String?
+  createdAt           DateTime
+  updatedAt           DateTime
+
+  user                User        @relation("TransaksiUser", fields: [userId], references: [id])
+  admin               User?        @relation("TransaksiAdmin", fields: [adminId], references: [id])
+  jenissampah         JenisSampah  @relation("TransaksiJenisSampah", fields: [idjenissampah], references: [id])
+}
+
+model JenisSampah {
+  id                    Int       @id @default(autoincrement())
+  namajenissampah       String
+  hargajenissampah      String
+  keteranganjenissampah String?
+
+  TransaksiAsJenisSampah  Transaksi[] @relation("TransaksiJenisSampah")
+}
+
+model Account {
+  id                Int       @id @default(autoincrement())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user              User      @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           Int       @id @default(autoincrement())
+  sessionToken String    @unique
+  userId       Int
+  expires      DateTime
+
+  user         User      @relation(fields: [userId], references: [id])
+}
+
+model VerificationToken {
+  identifier String
+  token      String    @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}

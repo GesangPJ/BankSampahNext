@@ -1,0 +1,15 @@
+# Docker Compose Kasbon Manager PostgreSQL Version
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      - NEXTAUTH_URL=
+      - NEXTAUTH_SECRET=
+      - NEXT_PUBLIC_APP_URL=
+      - DATABASE_URL=
+      - POSTGRES_PRISMA_URL=
+      - POSTGRES_URL_NON_POOLING=
+      - ADMIN_KEY=
