@@ -28,16 +28,30 @@ export const POST = async (req) => {
       return NextResponse.json({ error: "Semua bidang harus diisi." }, { status: 400 })
     }
 
+    // Ambil tanggal dan waktu saat ini
+    const now = new Date()
+    const createdAt = now.toISOString()
+
     try {
       const jenissampah = await prisma.jenissampah.create({
         data: {
           namajenissampah: nama,
           hargajenissampah: harga,
           keteranganjenissampah: keterangan,
+          createdAt,
+          updatedAt: createdAt,
         },
       })
 
-      return NextResponse.json(jenissampah, { status: 201 })
+      const historyjenis = await prisma.historyjenis.create({
+        data:{
+          namajenissampah: nama,
+          hargajenis: harga,
+          updatedAt: createdAt,
+        }
+      })
+
+      return NextResponse.json(jenissampah, historyjenis, { status: 201 })
     } catch (error) {
       return NextResponse.json({ error: "Jenis Sampah Sudah ada" }, { status: 400 })
     }
