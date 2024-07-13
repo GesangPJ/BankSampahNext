@@ -67,7 +67,7 @@ const TabelAkun = () => {
           const response = await fetch(`/api/tabel-akun?userId=${session.user.id}`)
           const data = await response.json()
 
-          const filteredData = data.filter(row => row.userType === 'KARYAWAN')
+          const filteredData = data.filter(row => row.userType === 'ANGGOTA')
 
           // Tambahkan nomor urut
           const numberedData = filteredData.map((row, index) => ({ ...row, no: index + 1 }))
