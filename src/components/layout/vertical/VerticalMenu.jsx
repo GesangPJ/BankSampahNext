@@ -41,6 +41,9 @@ const VerticalMenu = ({ scrollMenu }) => {
     return null
   }
 
+  const isAdmin = session.user.userType === 'ADMIN'
+  const isAnggota = session.user.userType === 'ANGGOTA'
+
   return (
     <ScrollWrapper
       {...(isBreakpointReached
@@ -59,6 +62,7 @@ const VerticalMenu = ({ scrollMenu }) => {
         renderExpandedMenuItemIcon={{ icon: <i className='ri-circle-line' /> }}
         menuSectionStyles={menuSectionStyles(theme)}
       >
+        {isAdmin && (
           <>
             <MenuItem
               href='/dashboard'
@@ -98,6 +102,33 @@ const VerticalMenu = ({ scrollMenu }) => {
               <MenuItem href='/dashboard/dokumentasi-api'>Dokumentasi API</MenuItem>
             </SubMenu>
           </>
+        )}
+
+        {isAnggota && (
+          <>
+          <MenuItem
+            href='/dashboard'
+            icon={<i className="ri-dashboard-line"></i>}
+          >
+            Dashboard
+          </MenuItem>
+          <MenuSection Label='Transaksi'>
+            <SubMenu
+              label='Laporan Transaksi'
+              icon={<i className="ri-file-chart-fill"></i>}
+            >
+              <MenuItem href='/dashboard/ekspor-laporan'>Ekspor Laporan</MenuItem>
+              <MenuItem href='/dashboard/harga-sampah'>Harga Jenis Sampah</MenuItem>
+            </SubMenu>
+            <SubMenu
+            label='Bantuan'
+            icon={<i class="ri-question-line"></i>}
+          >
+            <MenuItem href='/dashboard/bantuan'>Penggunaan</MenuItem>
+          </SubMenu>
+          </MenuSection>
+        </>
+        )}
       </Menu>
     </ScrollWrapper>
   )
