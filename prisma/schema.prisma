@@ -21,6 +21,7 @@ model User {
   sessions       Session[]
   TransaksisAsUser  Transaksi[]  @relation("TransaksiUser")
   TransaksisAsAdmin Transaksi[]  @relation("TransaksiAdmin")
+  JenissampahAsAdmin JenisSampah[] @relation("JenissampahAdmin")
 }
 
 model Transaksi {
@@ -42,11 +43,22 @@ model Transaksi {
 
 model JenisSampah {
   id                    Int       @id @default(autoincrement())
+  adminId               Int
   namajenissampah       String    @unique
   hargajenissampah      String
   keteranganjenissampah String?
+  createdAt             DateTime
+  updatedAt             DateTime
 
+  admin                 User      @relation("JenissampahAdmin", fields: [adminId], references: [id])
   TransaksiAsJenisSampah  Transaksi[] @relation("TransaksiJenisSampah")
+}
+
+model HistoryJenis {
+  id                    Int       @id @default(autoincrement())
+  namajenissampah       String
+  hargajenis            Int
+  updatedAt             DateTime
 }
 
 model Account {
