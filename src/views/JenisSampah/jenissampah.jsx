@@ -77,19 +77,13 @@ const HalamanJenisSampah = () =>{
     if (session) {
       const fetchData = async () => {
         try {
-          const response = await fetch(`/api/dashboard-admin?userId=${session.user.id}`)
+          const response = await fetch(`/api/jenis-sampah?userId=${session.user.id}`)
           const data = await response.json()
 
           // Tambahkan nomor urut
-          const numberedData = data.kasbons.map((row, index) => ({ ...row, no: index + 1 }))
+          const numberedData = data.map((row, index) => ({ ...row, no: index + 1 }))
 
           setRows(numberedData)
-          // setTotals({
-          //   jumlahTotal: data.jumlahTotal,
-          //   TotalSetuju: data.TotalSetuju,
-          //   TotalLunas: data.TotalLunas,
-          //   belumLunas: data.belumLunas
-          // })
 
           setLoading(false)
         } catch (error) {
