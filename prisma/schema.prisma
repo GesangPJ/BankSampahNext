@@ -16,7 +16,7 @@ model User {
   name           String?
   email          String    @unique
   password       String
-  userType       String?
+  userType       String?   @default("ANGGOTA")
   accounts       Account[]
   sessions       Session[]
   TransaksisAsUser  Transaksi[]  @relation("TransaksiUser")
@@ -42,7 +42,7 @@ model Transaksi {
 
 model JenisSampah {
   id                    Int       @id @default(autoincrement())
-  namajenissampah       String
+  namajenissampah       String    @unique
   hargajenissampah      String
   keteranganjenissampah String?
 
