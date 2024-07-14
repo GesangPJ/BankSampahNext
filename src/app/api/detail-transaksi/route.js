@@ -1,5 +1,5 @@
-// API Detail Kasbon. Lokasi : /src/app/api/detail-kasbon
-// API untuk menampilkan detail dari kasbon
+// API Detail Transaksi. Lokasi : /src/app/api/detail-transaksi
+// API untuk menampilkan detail dari transaksi
 
 import { NextResponse } from "next/server"
 
@@ -34,7 +34,7 @@ export async function GET(req) {
       }
     })
 
-    if (!kasbon) {
+    if (!transaksi) {
       return NextResponse.json({ error: "Transaksi tidak ditemukan" }, { status: 404 })
     }
 
@@ -46,7 +46,7 @@ export async function GET(req) {
       namaAdmin: transaksi.admin?.name || "-"
     }
 
-    console.log("Detail Kasbon", formattedKasbon)
+    console.log("Detail Transaksi :", formattedTransaksi)
 
     return NextResponse.json(formattedTransaksi, { status: 200 })
   } catch (error) {
