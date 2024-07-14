@@ -27,7 +27,7 @@ export const PUT = async (req) =>{
     }
 
     try{
-      const jenissampah = await prisma.jenissampah.update({
+      const jenissampah = await prisma.jenisSampah.update({
         where: {id: idjenissampah},
         data:{
           namajenissampah:namajenissampah,
