@@ -45,7 +45,7 @@ model JenisSampah {
   id                    Int       @id @default(autoincrement())
   adminId               Int
   namajenissampah       String    @unique
-  hargajenissampah      String
+  hargajenissampah      Int
   keteranganjenissampah String?
   createdAt             DateTime
   updatedAt             DateTime
