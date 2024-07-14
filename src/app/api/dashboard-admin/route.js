@@ -64,7 +64,7 @@ export async function GET(req) {
     }))
 
     // Menghitung jumlah total, total setuju, total lunas, dan belum lunas
-    const TotalBerat = kasbons.reduce((acc, transaksi) => acc + transaksi.berat, 0)
+    const TotalBerat = transaksi.reduce((acc, transaksi) => acc + transaksi.berat, 0)
 
     // Kasbon Yang Disetujui
     const TotalBiaya = transaksi
