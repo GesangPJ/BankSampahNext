@@ -12,23 +12,38 @@ export const POST = async (req) => {
   console.log('Token:', token)
 
   if (!token) {
-    console.log('Unauthorized Access : API Tambah Kasbon')
+    console.log('Unauthorized Access: API Tambah Kasbon')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
   try {
-    const { userId, idjenissampah, hargajenissampah, berat, adminId, keterangan } = await req.json()
+    const { userId, idjenissampah, berat, adminId, keterangan } = await req.json()
 
-    if (!userId || !idjenissampah || !hargajenissampah || !berat || !adminId) {
-      return NextResponse.json({ error: "Semua bidang harus diisi." }, { status: 400 });
+    if (!userId || !idjenissampah || !berat || !adminId) {
+      return NextResponse.json({ error: 'Semua bidang harus diisi.' }, { status: 400 })
     }
+
+    const jenisSampah = await prisma.jenisSampah.findUnique({
+      where: {
+        id: idjenissampah,
+      },
+      select: {
+        hargajenissampah: true,
+      },
+    })
+
+    if (!jenisSampah) {
+      return NextResponse.json({ error: 'Jenis sampah tidak ditemukan.' }, { status: 404 })
+    }
+
+    const hargajenissampah = jenisSampah.hargajenissampah
 
     // Ambil tanggal dan waktu saat ini
     const now = new Date()
     const createdAt = now.toISOString()
-
-    const HitungTotalHarga = hargajenissampah * berat
+    const hargasampah = hargajenissampah
+    const HitungTotalHarga = hargasampah * berat
 
     try {
       const transaksi = await prisma.transaksi.create({
@@ -38,24 +53,24 @@ export const POST = async (req) => {
           berat,
           totalharga: HitungTotalHarga,
           idjenissampah,
+          hargasampah,
           keterangantransaksi: keterangan,
-          metode,
           createdAt,
           updatedAt: createdAt,
         },
       })
 
-      console.log('Transaksi dibuat :', transaksi)
+      console.log('Transaksi dibuat:', transaksi)
 
       return NextResponse.json(transaksi, { status: 201 })
     } catch (error) {
       console.error('Error membuat transaksi:', error)
 
-      return NextResponse.json({ error: "Transaksi sudah ada" }, { status: 400 })
+      return NextResponse.json({ error: 'Transaksi sudah ada.' }, { status: 400 })
     }
   } catch (error) {
     console.error('Error membuat transaksi:', error)
 
-    return NextResponse.json({ error: "Terjadi kesalahan saat memproses permintaan." }, { status: 500 })
+    return NextResponse.json({ error: 'Terjadi kesalahan saat memproses permintaan.' }, { status: 500 })
   }
 }

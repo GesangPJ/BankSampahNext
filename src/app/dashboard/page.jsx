@@ -9,8 +9,8 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 
 //Import Komponen dan pastikan komponen menjadi dynamic page
-import TabelAdmin from '@/views/kasbon-admin/KasbonAdmin'
-import TabelKaryawan from '@/views/kasbon-karyawan/KasbonKaryawan'
+import DashboardSampahAdmin from '@/views/dashboard/DashboardAdmin'
+import DashboardSampahAnggota from '@/views/dashboard/DashboardAnggota'
 
 const DashboardAnalytics = () => {
   const { data: session, status } = useSession()
@@ -29,7 +29,7 @@ const DashboardAnalytics = () => {
   }
 
   const isAdmin = session.user.userType === 'ADMIN'
-  const isKaryawan = session.user.userType === 'KARYAWAN'
+  const isAnggota = session.user.userType === 'ANGGOTA'
 
   return (
     <div style={{ height: 400, width: '100%' }}>
@@ -37,14 +37,14 @@ const DashboardAnalytics = () => {
           <div>
             <h1>Dashboard Admin</h1>
             <br />
-            <TabelAdmin/>
+            <DashboardSampahAdmin/>
           </div>
         )}
-        {isKaryawan && (
+        {isAnggota && (
             <div>
-              <h1>Dashboard Karyawan</h1>
+              <h1>Dashboard Anggota</h1>
               <br />
-            <TabelKaryawan/>
+            <DashboardSampahAnggota/>
             </div>
         )}
     </div>

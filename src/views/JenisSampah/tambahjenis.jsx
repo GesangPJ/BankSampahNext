@@ -2,8 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react'
 
-import { useRouter } from 'next/navigation'
-
 import { useSession } from 'next-auth/react'
 
 import Card from '@mui/material/Card'
@@ -13,21 +11,26 @@ import TextField from '@mui/material/TextField'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import InputAdornment from '@mui/material/InputAdornment'
-import Select from '@mui/material/Select'
-import InputLabel from '@mui/material/InputLabel'
-import FormControl from '@mui/material/FormControl'
 import Alert from '@mui/material/Alert'
 
 const ViewTambahJenisSampah = () =>{
-  const {data: session, status} = useSession()
+  const {data: session} = useSession()
   const [alert, setAlert] = useState(null)
   const [message, setMessage] = useState('')
   const formRef = useRef(null)
-  const router = useRouter()
 
   useEffect(() => {
 
-  }, [])
+    if (alert) {
+      const timer = setTimeout(() => {
+        setAlert(null)
+        setMessage('')
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+
+  }, [alert])
 
   if (!session) {
     return null
@@ -38,10 +41,10 @@ const ViewTambahJenisSampah = () =>{
     const data = new FormData(event.target)
 
     const formData = {
-      name: data.get('nama'),
-      harga: data.get('harga'),
+      nama: data.get('nama'),
+      adminid: session.user.id,
+      harga: parseInt(data.get('harga'),10),
       keterangan: data.get('keterangan'),
-      adminId: session.user.id,
     }
 
     try {
@@ -53,11 +56,13 @@ const ViewTambahJenisSampah = () =>{
         body: JSON.stringify(formData),
       })
 
+      console.log('Jenis Sampah dikirim : ', formData)
+
       const result = await response.json()
 
       if (response.ok) {
         setAlert('success')
-        setMessage('Akun berhasil didaftarkan!')
+        setMessage('Jenis Sampah berhasil ditambahkan!')
         formRef.current.reset() // Kosongkan form setelah berhasil didaftarkan
       } else {
         setAlert('error')
@@ -72,7 +77,7 @@ const ViewTambahJenisSampah = () =>{
   return(
     <div>
       <Card>
-        <CardHeader title='Registrasi Akun' />
+        <CardHeader title='Tambah Jenis Sampah' />
         <CardContent>
           {alert && (
             <Alert severity={alert} style={{ marginBottom: '1rem' }}>
@@ -84,7 +89,7 @@ const ViewTambahJenisSampah = () =>{
             <Grid item xs={12}>
                 <TextField
                   id='nama'
-                  name='name'
+                  name='nama'
                   fullWidth
                   label='Nama'
                   placeholder='Nama Jenis Sampah'
@@ -103,7 +108,7 @@ const ViewTambahJenisSampah = () =>{
                   name='harga'
                   fullWidth
                   type='number'
-                  label='Harga Sampah'
+                  label='Harga Sampah (Rp)'
                   placeholder='Harga Sampah per Kg'
                   InputProps={{
                     startAdornment: (

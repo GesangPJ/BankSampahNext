@@ -13,7 +13,7 @@ export async function GET(req) {
   console.log('Token:', token)
 
   if (!token) {
-    console.log('Unauthorized Access : API Ambil Detail Kasbon')
+    console.log('Unauthorized Access : API Ambil Detail Transaksi')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
@@ -23,10 +23,10 @@ export async function GET(req) {
 
   try {
     if (!id) {
-      return NextResponse.json({ error: "Id Kasbon kosong" }, { status: 400 })
+      return NextResponse.json({ error: "Id Transaksi kosong" }, { status: 400 })
     }
 
-    const kasbon = await prisma.kasbon.findUnique({
+    const transaksi = await prisma.transaksi.findUnique({
       where: { id: parseInt(id) },
       include: {
         user: { select: { name: true } },
@@ -35,23 +35,23 @@ export async function GET(req) {
     })
 
     if (!kasbon) {
-      return NextResponse.json({ error: "Kasbon tidak ditemukan" }, { status: 404 })
+      return NextResponse.json({ error: "Transaksi tidak ditemukan" }, { status: 404 })
     }
 
-    const formattedKasbon = {
-      ...kasbon,
-      createdAt: kasbon.createdAt.toISOString(),
-      updatedAt: kasbon.updatedAt.toISOString(),
-      namaKaryawan: kasbon.user?.name || "-",
-      namaAdmin: kasbon.admin?.name || "-"
+    const formattedTransaksi = {
+      ...transaksi,
+      createdAt: transaksi.createdAt.toISOString(),
+      updatedAt: transaksi.updatedAt.toISOString(),
+      namaAnggota: transaksi.user?.name || "-",
+      namaAdmin: transaksi.admin?.name || "-"
     }
 
     console.log("Detail Kasbon", formattedKasbon)
 
-    return NextResponse.json(formattedKasbon, { status: 200 })
+    return NextResponse.json(formattedTransaksi, { status: 200 })
   } catch (error) {
-    console.error("Error mengambil data Kasbon", error)
+    console.error("Error mengambil data Transaksi", error)
 
-    return NextResponse.json({ error: "Terjadi kesalahan saat mengambil data kasbon" }, { status: 500 })
+    return NextResponse.json({ error: "Terjadi kesalahan saat mengambil data transaksi" }, { status: 500 })
   }
 }

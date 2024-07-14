@@ -12,7 +12,7 @@ export async function GET(req) {
   console.log('Token:', token)
 
   if (!token) {
-    console.log('Unauthorized Access : API Dashboard Admin')
+    console.log('Unauthorized Access : API Dashboard Anggota')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
@@ -24,10 +24,13 @@ export async function GET(req) {
     return NextResponse.json({ error: 'User ID tidak ditemukan!' }, { status: 400 })
   }
 
-  console.log(userId)
+  console.log('Anggota yang mengakses dashboard :',userId)
 
   try {
     const transaksi = await prisma.transaksi.findMany({
+      where:{
+        userId: parseInt(userId),
+      },
       select: {
         id: true,
         userId: true,
@@ -40,16 +43,6 @@ export async function GET(req) {
         createdAt: true,
         updatedAt: true,
         jenissampah: {select:{namajenissampah:true}},
-        user: {
-          select: {
-            name: true,
-          },
-        },
-        admin: {
-          select: {
-            name: true,
-          },
-        },
       },
     })
 
@@ -58,8 +51,6 @@ export async function GET(req) {
       ...transaksi,
       createdAt: transaksi.createdAt.toISOString(),
       updatedAt: transaksi.updatedAt.toISOString(),
-      namaUser: transaksi.user?.name || '-',
-      namaAdmin: transaksi.admin?.name || '-',
       namajenissampah: transaksi.jenissampah.namajenissampah
     }))
 

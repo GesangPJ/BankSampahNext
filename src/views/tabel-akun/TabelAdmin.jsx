@@ -106,7 +106,7 @@ const TabelAkunAdmin = () => {
     <div className='max-w-[100%]'>
       <h2 className='font-bold'>
         Akun Admin
-      </h2>
+      </h2><br />
       <DataGrid
         rows={rows}
         sx={{

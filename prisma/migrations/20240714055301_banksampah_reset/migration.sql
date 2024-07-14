@@ -30,7 +30,7 @@ CREATE TABLE "JenisSampah" (
     "id" SERIAL NOT NULL,
     "adminId" INTEGER NOT NULL,
     "namajenissampah" TEXT NOT NULL,
-    "hargajenissampah" TEXT NOT NULL,
+    "hargajenissampah" INTEGER NOT NULL,
     "keteranganjenissampah" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE "JenisSampah" (
 -- CreateTable
 CREATE TABLE "HistoryJenis" (
     "id" SERIAL NOT NULL,
-    "idjenissampah" INTEGER NOT NULL,
+    "namajenissampah" TEXT NOT NULL,
     "hargajenis" INTEGER NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -87,9 +87,6 @@ CREATE TABLE "VerificationToken" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "JenisSampah_namajenissampah_key" ON "JenisSampah"("namajenissampah");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
 
 -- CreateIndex
@@ -112,9 +109,6 @@ ALTER TABLE "Transaksi" ADD CONSTRAINT "Transaksi_idjenissampah_fkey" FOREIGN KE
 
 -- AddForeignKey
 ALTER TABLE "JenisSampah" ADD CONSTRAINT "JenisSampah_adminId_fkey" FOREIGN KEY ("adminId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "HistoryJenis" ADD CONSTRAINT "HistoryJenis_idjenissampah_fkey" FOREIGN KEY ("idjenissampah") REFERENCES "JenisSampah"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

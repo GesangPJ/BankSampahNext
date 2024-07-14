@@ -7,12 +7,7 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import { Button } from '@mui/material'
-import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
-import HighlightOffIcon from '@mui/icons-material/HighlightOff'
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
-import PauseCircleIcon from '@mui/icons-material/PauseCircle'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import ListAltIcon from '@mui/icons-material/ListAlt'
 import DataObjectIcon from '@mui/icons-material/DataObject'
@@ -21,37 +16,12 @@ import { jsPDF } from "jspdf"
 import autoTable from 'jspdf-autotable'
 import ExcelJS from 'exceljs'
 
-
 const truncateText = (text, maxLength) => {
   if (text.length <= maxLength) {
     return text
   }
 
   return text.slice(0, maxLength) + '...'
-}
-
-const getStatusChip = (status) => {
-  switch (status) {
-    case 'BELUM':
-      return <Chip label="BELUM" color="warning" variant="outlined" icon= {<PauseCircleIcon/>} />
-    case 'SETUJU':
-      return <Chip label="SETUJU" color="success" variant="outlined" icon= {<CheckCircleOutlineIcon/>} />
-    case 'TOLAK':
-      return <Chip label="DITOLAK" color="error" variant="outlined"  icon= {<HighlightOffIcon/>} />
-    default:
-      return <Chip label="UNKNOWN" color="default" variant="outlined" />
-  }
-}
-
-const getBayarChip = (status) => {
-  switch (status) {
-    case 'BELUM':
-      return <Chip label="BELUM" color="error" variant="outlined" icon= {<ErrorOutlineIcon/>} />
-    case 'LUNAS':
-      return <Chip label="LUNAS" color="success" variant="outlined" icon= {<CheckCircleOutlineIcon/>} />
-    default:
-      return <Chip label="UNKNOWN" color="default" variant="outlined" />
-  }
 }
 
 const formatDate = (dateString) => {
@@ -74,41 +44,37 @@ const formatCurrency = (amount) => {
   }).format(amount)
 }
 
-const TabelAdmin = () => {
+const DashboardSampahAnggota = () => {
   const router = useRouter()
   const { data: session } = useSession()
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true)
 
   const [totals, setTotals] = useState({
-    jumlahTotal: 0,
-    TotalSetuju: 0,
-    TotalLunas: 0,
-    belumLunas: 0
+    TotalBerat:0,
+    TotalBiaya:0,
   })
 
   useEffect(() => {
     if (session) {
       const fetchData = async () => {
         try {
-          const response = await fetch(`/api/dashboard-admin?userId=${session.user.id}`)
+          const response = await fetch(`/api/dashboard-anggota?userId=${session.user.id}`)
           const data = await response.json()
 
           // Tambahkan nomor urut
-          const numberedData = data.kasbons.map((row, index) => ({ ...row, no: index + 1 }))
+          const numberedData = data.transaksi.map((row, index) => ({ ...row, no: index + 1 }))
 
           setRows(numberedData)
 
           setTotals({
-            jumlahTotal: data.jumlahTotal,
-            TotalSetuju: data.TotalSetuju,
-            TotalLunas: data.TotalLunas,
-            belumLunas: data.belumLunas
+            TotalBerat: data.TotalBerat,
+            TotalBiaya: data.TotalBiaya,
           })
 
           setLoading(false)
         } catch (error) {
-          console.error('Error mengambil data:', error)
+          console.error('Error mengambil data transaksi:', error)
         }
       }
 
@@ -132,46 +98,37 @@ const TabelAdmin = () => {
       headerClassName:'app-theme--header',
       width: 150,
       renderCell: (params) => <div>{formatDate(params.value)}</div>,
-    },{
-      field: 'namaKaryawan',
-      headerName: 'Nama',
+    },
+    {
+      field: 'namajenissampah',
+      headerName: 'Jenis Sampah',
       headerClassName:'app-theme--header',
       width: 160,
     },
     {
-      field: 'jumlah',
-      headerName: 'Jumlah',
+      field: 'hargajenissampah',
+      headerName: 'Harga per Kg',
+      headerClassName:'app-theme--header',
+      width: 160,
+    },
+    {
+      field: 'beratsampah',
+      headerName: 'Berat (Kg)',
       headerClassName:'app-theme--header',
       width: 100,
-      renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
     },
     {
-      field: 'status_r',
-      headerName: 'Status Request',
+      field: 'totalharga',
+      headerName: 'Harga Total',
       headerClassName:'app-theme--header',
-      width: 160,
-      renderCell: (params) => getStatusChip(params.value),
+      width: 150,
     },
     {
-      field: 'status_b',
-      headerName: 'Status Bayar',
-      headerClassName:'app-theme--header',
-      width: 160,
-      renderCell: (params) => getBayarChip(params.value),
-    },
-    { field: 'metode', headerName: 'Metode', headerClassName:'app-theme--header', width: 100 },
-    {
-      field: 'keterangan',
+      field: 'keterangantransaksi',
       headerName: 'Keterangan',
       headerClassName:'app-theme--header',
       width: 150,
-      renderCell: (params) => <div>{truncateText(params.value, 40)}</div>,
-    },
-    {
-      field: 'namaAdmin',
-      headerName: 'Admin',
-      headerClassName:'app-theme--header',
-      width: 170,
+      renderCell: (params) => <div>{truncateText(params.value, 50)}</div>,
     },
     {
       field: 'detail',
@@ -189,7 +146,7 @@ const TabelAdmin = () => {
 
   const handleExcelExport = async () => {
     const workbook = new ExcelJS.Workbook()
-    const worksheet = workbook.addWorksheet('Detail Kasbon')
+    const worksheet = workbook.addWorksheet('Transaksi Sampah')
 
     // Menambahkan header
     worksheet.columns = columns
@@ -218,7 +175,7 @@ const TabelAdmin = () => {
     const link = document.createElement('a')
 
     link.href = URL.createObjectURL(blob)
-    link.download = `Kasbon.xlsx`
+    link.download = `TransaksiSampah-${session.user.name}.xlsx`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -230,25 +187,21 @@ const TabelAdmin = () => {
     const columns = [
       { header: 'No', dataKey: 'no' },
       { header: 'Tanggal/Jam', dataKey: 'updatedAt' },
-      { header: 'Nama', dataKey: 'namaKaryawan' },
-      { header: 'Jumlah', dataKey: 'jumlah' },
-      { header: 'Status Request', dataKey: 'status_r' },
-      { header: 'Status Bayar', dataKey: 'status_b' },
-      { header: 'Metode', dataKey: 'metode' },
-      { header: 'Keterangan', dataKey: 'keterangan' },
-      { header: 'Admin', dataKey: 'namaAdmin' }
+      { header: 'Jenis Sampah', dataKey: 'namajenissampah' },
+      { header: 'Harga per Kg', dataKey: 'hargasampah' },
+      { header: 'Berat', dataKey: 'berat' },
+      { header: 'Total Harga', dataKey: 'totalharga' },
+      {header: 'Keterangan', dataKey: 'keterangantransaksi'},
     ]
 
     const rowsForPDF = rows.map(row => ({
       no: row.no,
       updatedAt: formatDate(row.updatedAt),
-      namaKaryawan: row.namaKaryawan,
-      jumlah: formatCurrency(row.jumlah),
-      status_r: row.status_r,
-      status_b: row.status_b,
-      metode: row.metode,
-      keterangan: truncateText(row.keterangan, 40),
-      namaAdmin: row.namaAdmin
+      namajenissampah: row.namajenissampah,
+      hargasampah: row.hargasampah,
+      berat: row.berat,
+      totalharga: formatCurrency(row.totalharga),
+      keterangan: truncateText(row.keterangantransaksi, 50),
     }))
 
     autoTable(doc, {
@@ -256,7 +209,7 @@ const TabelAdmin = () => {
       body: rowsForPDF.map(row => columns.map(col => row[col.dataKey])),
     })
 
-    doc.save('Kasbon.pdf')
+    doc.save(`TransaksiSampah-${session.user.name}.pdf`)
   }
 
   const handleJSON = () => {
@@ -265,7 +218,7 @@ const TabelAdmin = () => {
     const link = document.createElement('a')
 
     link.href = URL.createObjectURL(blob)
-    link.download = 'data_kasbon.json'
+    link.download = `transaksisampah-${session.user.name}.json`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -326,17 +279,11 @@ const TabelAdmin = () => {
       <div>
         <Box>
           <Typography variant='subtitle1'>
-          Jumlah Total Kasbon Diminta : {formatCurrency(totals.jumlahTotal)}
+          Jumlah Total Berat Sampah : {formatCurrency(totals.TotalBerat)}
           </Typography><br />
           <Typography variant='subtitle1'>
-            Jumlah Total Kasbon Setuju : {formatCurrency(totals.TotalSetuju)}
+            Jumlah Total Harga Sampah : {formatCurrency(totals.TotalBiaya)}
             </Typography><br />
-          <Typography variant='subtitle1'>
-            Jumlah Total Kasbon Lunas : {formatCurrency(totals.TotalLunas)}
-            </Typography><br />
-          <Typography variant='subtitle1'>
-            Jumlah Total Kasbon Belum Lunas : {formatCurrency(totals.belumLunas)}
-            </Typography>
         </Box>
       </div>
       <br />
@@ -360,4 +307,4 @@ const TabelAdmin = () => {
   )
 }
 
-export default TabelAdmin
+export default DashboardSampahAnggota

@@ -56,7 +56,7 @@ const DetailPage = () => {
     const fetchData = async () => {
       try {
         if (id) {
-          const response = await fetch(`/api/detail-kasbon?id=${id}`)
+          const response = await fetch(`/api/detail-transaksi?id=${id}`)
 
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`)
@@ -101,29 +101,28 @@ const DetailPage = () => {
   }
 
   const rows = [
-    { label: 'ID Kasbon', value: data.id },
-    { label: 'ID Karyawan', value: data.userId },
-    { label: 'Nama', value: data.namaKaryawan },
-    { label: 'Jumlah', value: formatCurrency(data.jumlah) },
-    { label: 'Status Request', value: data.status_r },
-    { label: 'Status Bayar', value: data.status_b },
-    { label: 'Metode Pembayaran', value: data.metode },
-    { label: 'Keterangan', value: data.keterangan },
+    { label: 'ID Transaksi', value: data.id },
+    { label: 'ID Anggota', value: data.userId },
+    { label: 'Nama Anggota', value: data.namaAnggota },
+    { label: 'Jenis Sampah', value: data.namajenissampah},
+    { label: 'Berat (Kg)', value: data.berat},
+    { label: 'Total Harga', value: formatCurrency(data.totalharga) },
+    { label: 'Keterangan', value: data.keterangantransaksi },
     { label: 'Nama Admin', value: data.namaAdmin },
-    { label: 'Tanggal Kasbon Dibuat', value: formatDate(data.createdAt) },
-    { label: 'Tanggal Kasbon Diperbarui', value: formatDate(data.updatedAt) },
+    { label: 'Tanggal Transaksi Dibuat', value: formatDate(data.createdAt) },
+    { label: 'Tanggal Transaksi Diperbarui', value: formatDate(data.updatedAt) },
   ]
 
   const handlePrint = () => {
     const doc = new jsPDF()
 
     autoTable(doc, { html: '#detail-table' })
-    doc.save(`detail_kasbon-${data.id}.pdf`)
+    doc.save(`detail_transaksi-${data.id}.pdf`)
   }
 
   const handleExcelExport = async () => {
     const workbook = new ExcelJS.Workbook()
-    const worksheet = workbook.addWorksheet('Detail Kasbon')
+    const worksheet = workbook.addWorksheet('Detail Transaksi')
 
     worksheet.columns = [
       { header: 'Label', key: 'label', width: 30 },
@@ -139,7 +138,7 @@ const DetailPage = () => {
     const link = document.createElement('a')
 
     link.href = URL.createObjectURL(blob)
-    link.download = `DetailKasbon-${data.id}.xlsx`
+    link.download = `DetailTransaksi-${data.id}.xlsx`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -151,10 +150,10 @@ const DetailPage = () => {
 
   return (
     <div>
-      <h1>Detail Kasbon : {data.namaKaryawan} | ID : {data.userId} </h1>
+      <h1>Detail Kasbon : {data.namaAnggota} | ID : {data.userId} </h1>
       <br />
       <TableContainer component={Paper}>
-        <Table id="detail-table" sx={{ minWidth: 200 }} aria-label="Detail Kasbon">
+        <Table id="detail-table" sx={{ minWidth: 200 }} aria-label="Detail Transaksi">
           <TableBody>
             {rows.map((row, index) => (
               <TableRow key={index}>

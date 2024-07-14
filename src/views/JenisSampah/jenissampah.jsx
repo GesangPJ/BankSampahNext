@@ -7,6 +7,9 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
+import ListAltIcon from '@mui/icons-material/ListAlt'
+import DataObjectIcon from '@mui/icons-material/DataObject'
 import { jsPDF } from "jspdf"
 import autoTable from 'jspdf-autotable'
 import ExcelJS from 'exceljs'
@@ -43,7 +46,7 @@ const HalamanJenisSampah = () =>{
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('/api/edit-jenissampah', {
+      const response = await fetch('/api/edit-jenis-sampah', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -54,16 +57,16 @@ const HalamanJenisSampah = () =>{
       const result = await response.json()
 
       if (response.ok) {
-        alert('Data Admin Berhasil diubah')
+        alert('Data jenis sampah berhasil diubah')
         setRows((prevRows) =>
           prevRows.map((row) =>
-            row.id === formData.userId
-              ? { ...row, name: formData.nama, email: formData.email }
+            row.id === formData.idjenissampah
+              ? { ...row, nama: formData.namajenissampah, harga: formData.hargajenissampah }
               : row
           )
         )
       } else {
-        alert(result.error || 'Ada kesalahan ketika mengganti data akun')
+        alert(result.error || 'Ada kesalahan ketika mengganti data jenis sampah')
       }
 
       handleClose()
@@ -77,7 +80,7 @@ const HalamanJenisSampah = () =>{
     if (session) {
       const fetchData = async () => {
         try {
-          const response = await fetch(`/api/jenis-sampah?userId=${session.user.id}`)
+          const response = await fetch(`/api/jenis-sampah`)
           const data = await response.json()
 
           // Tambahkan nomor urut
@@ -113,14 +116,14 @@ const HalamanJenisSampah = () =>{
       field: 'keteranganjenissampah',
       headerName: 'Keterangan',
       headerClassName: 'app-theme--header',
-      width: 160,
+      width: 220,
     },
     {
       field: 'edit',
       headerName: 'Edit',
       headerClassName: 'app-theme--header',
       renderCell: (params) => (
-        <Button variant="contained" color="primary" onClick={() => handleEditClick(params.row)}>
+        <Button variant="contained" color="primary" onClick={() => handleClickOpen(params.row)}>
           Edit
         </Button>
       ),
@@ -294,7 +297,7 @@ const HalamanJenisSampah = () =>{
           </Button>
         </DialogActions>
       </Dialog>
-      <div>
+      <div><br />
       <Box sx={{ display: 'flex', gap: 7, flexWrap: 'wrap' }}>
         <Button variant='outlined' color="error" size="large" startIcon={<PictureAsPdfIcon/>} sx={ { borderRadius: 30 } } onClick={handlePDF}>
           PDF Export

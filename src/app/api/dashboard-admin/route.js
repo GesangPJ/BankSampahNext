@@ -27,65 +27,56 @@ export async function GET(req) {
   console.log(userId)
 
   try {
-    const kasbons = await prisma.kasbon.findMany({
+    const transaksi = await prisma.transaksi.findMany({
       select: {
         id: true,
         userId: true,
         adminId: true,
-        jumlah: true,
-        status_r: true,
-        status_b: true,
-        keterangan: true,
-        metode: true,
+        idjenissampah:true,
+        hargasampah:true,
+        berat:true,
+        totalharga:true,
+        keterangantransaksi:true,
         createdAt: true,
         updatedAt: true,
+        jenissampah: {select:{namajenissampah:true}},
         user: {
           select: {
-            name: true, // Mengambil nama karyawan
+            name: true,
           },
         },
         admin: {
           select: {
-            name: true, // Mengambil nama admin
+            name: true,
           },
         },
       },
     })
 
     // Konversi tanggal ke format ISO dan tambahkan nama karyawan dan admin
-    const formattedKasbons = kasbons.map(kasbon => ({
-      ...kasbon,
-      createdAt: kasbon.createdAt.toISOString(),
-      updatedAt: kasbon.updatedAt.toISOString(),
-      namaKaryawan: kasbon.user?.name || '-',
-      namaAdmin: kasbon.admin?.name || '-',
+    const formattedTransaksi = transaksi.map(transaksi => ({
+      ...transaksi,
+      createdAt: transaksi.createdAt.toISOString(),
+      updatedAt: transaksi.updatedAt.toISOString(),
+      namaUser: transaksi.user?.name || '-',
+      namaAdmin: transaksi.admin?.name || '-',
+      namajenissampah: transaksi.jenissampah.namajenissampah
     }))
 
-    // Menghitung jumlah total, total setuju, total lunas, dan belum lunas
-    const jumlahTotal = kasbons.reduce((acc, kasbon) => acc + kasbon.jumlah, 0)
+    // Menghitung jumlah total berat
+    const TotalBerat = transaksi.reduce((acc, transaksi) => acc + parseFloat(transaksi.berat), 0)
 
-    // Kasbon Yang Disetujui
-    const TotalSetuju = kasbons
-      .filter(kasbon => kasbon.status_r === 'SETUJU')
-      .reduce((acc, kasbon) => acc + kasbon.jumlah, 0)
+    // Menghitung jumlah total biaya
+    const TotalBiaya = transaksi.reduce((acc, transaksi) => acc + parseFloat(transaksi.totalharga), 0)
 
-      // Kasbon yang sudah LUNAS
-    const TotalLunas = kasbons
-      .filter(kasbon => kasbon.status_b === 'LUNAS')
-      .reduce((acc, kasbon) => acc + kasbon.jumlah, 0)
-
-      // Kasbon yang Belum Lunas
-    const belumLunas = jumlahTotal - TotalLunas
 
     return NextResponse.json({
-      kasbons: formattedKasbons,
-      jumlahTotal,
-      TotalSetuju,
-      TotalLunas,
-      belumLunas
+      transaksi: formattedTransaksi,
+      TotalBerat,
+      TotalBiaya,
     }, { status: 200 })
   } catch (error) {
-    console.error('Error fetching kasbon data:', error)
+    console.error('Error mengambil data transaksi :', error)
 
     return NextResponse.json({ error: 'Terjadi kesalahan saat mengambil data kasbon' }, { status: 500 })
   }

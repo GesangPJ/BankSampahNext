@@ -7,12 +7,7 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import { Button } from '@mui/material'
-import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
-import HighlightOffIcon from '@mui/icons-material/HighlightOff'
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
-import PauseCircleIcon from '@mui/icons-material/PauseCircle'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import ListAltIcon from '@mui/icons-material/ListAlt'
 import DataObjectIcon from '@mui/icons-material/DataObject'
@@ -20,8 +15,6 @@ import Typography from '@mui/material/Typography'
 import { jsPDF } from "jspdf"
 import autoTable from 'jspdf-autotable'
 import ExcelJS from 'exceljs'
-import JenisSampah from '@/app/dashboard/jenis-sampah/page'
-
 
 const truncateText = (text, maxLength) => {
   if (text.length <= maxLength) {
@@ -29,30 +22,6 @@ const truncateText = (text, maxLength) => {
   }
 
   return text.slice(0, maxLength) + '...'
-}
-
-const getStatusChip = (status) => {
-  switch (status) {
-    case 'BELUM':
-      return <Chip label="BELUM" color="warning" variant="outlined" icon= {<PauseCircleIcon/>} />
-    case 'SETUJU':
-      return <Chip label="SETUJU" color="success" variant="outlined" icon= {<CheckCircleOutlineIcon/>} />
-    case 'TOLAK':
-      return <Chip label="DITOLAK" color="error" variant="outlined"  icon= {<HighlightOffIcon/>} />
-    default:
-      return <Chip label="UNKNOWN" color="default" variant="outlined" />
-  }
-}
-
-const getBayarChip = (status) => {
-  switch (status) {
-    case 'BELUM':
-      return <Chip label="BELUM" color="error" variant="outlined" icon= {<ErrorOutlineIcon/>} />
-    case 'LUNAS':
-      return <Chip label="LUNAS" color="success" variant="outlined" icon= {<CheckCircleOutlineIcon/>} />
-    default:
-      return <Chip label="UNKNOWN" color="default" variant="outlined" />
-  }
 }
 
 const formatDate = (dateString) => {
@@ -73,6 +42,16 @@ const formatCurrency = (amount) => {
     currency: 'IDR',
     minimumFractionDigits: 0,
   }).format(amount)
+}
+
+const formatDecimal = (number) => {
+  const parsedNumber = parseFloat(number)
+
+  if (isNaN(parsedNumber)) {
+    return '0.00';
+  }
+
+  return parsedNumber.toFixed(2)
 }
 
 const DashboardSampahAdmin = () => {
@@ -133,44 +112,47 @@ const DashboardSampahAdmin = () => {
       field: 'namaUser',
       headerName: 'Nama User',
       headerClassName:'app-theme--header',
-      width: 160,
+      width: 120,
     },
     {
       field: 'namajenissampah',
-      headerName: 'Jenis Sampah',
+      headerName: 'Sampah',
       headerClassName:'app-theme--header',
-      width: 160,
+      width: 120,
     },
     {
-      field: 'hargajenissampah',
-      headerName: 'Harga per Kg',
+      field: 'hargasampah',
+      headerName: 'Harga',
       headerClassName:'app-theme--header',
-      width: 160,
+      width: 120,
+      renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
     },
     {
-      field: 'beratsampah',
+      field: 'berat',
       headerName: 'Berat (Kg)',
       headerClassName:'app-theme--header',
       width: 100,
+      renderCell: (params) => <div>{formatDecimal(params.value)}</div>,
     },
     {
       field: 'totalharga',
       headerName: 'Harga Total',
       headerClassName:'app-theme--header',
-      width: 150,
+      width: 120,
+      renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
     },
     {
       field: 'keterangantransaksi',
       headerName: 'Keterangan',
       headerClassName:'app-theme--header',
-      width: 150,
+      width: 160,
       renderCell: (params) => <div>{truncateText(params.value, 50)}</div>,
     },
     {
       field: 'namaAdmin',
       headerName: 'Admin',
       headerClassName:'app-theme--header',
-      width: 170,
+      width: 120,
     },
     {
       field: 'detail',
@@ -325,7 +307,7 @@ const DashboardSampahAdmin = () => {
       <div>
         <Box>
           <Typography variant='subtitle1'>
-          Jumlah Total Berat Sampah : {formatCurrency(totals.TotalBerat)}
+          Jumlah Total Berat Sampah : {formatDecimal(totals.TotalBerat)} Kg
           </Typography><br />
           <Typography variant='subtitle1'>
             Jumlah Total Harga Sampah : {formatCurrency(totals.TotalBiaya)}

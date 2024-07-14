@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation'
 
 import { useSession } from 'next-auth/react'
 
-import ViewTambahJenisSampah from "@/views/JenisSampah/tambahjenis"
+import KomponenTambahTransaksi from "@/views/transaksi/tambahtransaksi"
 
-const HalamanTambahJenisSampah = () =>{
+const HalamanTambahTransaksi = () =>{
   const { data: session, status } = useSession()
   const router = useRouter()
 
@@ -27,9 +27,13 @@ const HalamanTambahJenisSampah = () =>{
 
   return(
     <div>
-      <ViewTambahJenisSampah/>
+      <div>
+        <h1>Tambah Transaksi</h1>
+      </div>
+      <br />
+      <KomponenTambahTransaksi/>
     </div>
   )
 }
 
-export default HalamanTambahJenisSampah
+export default HalamanTambahTransaksi

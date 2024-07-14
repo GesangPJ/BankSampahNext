@@ -76,8 +76,8 @@ const VerticalMenu = ({ scrollMenu }) => {
                 icon={<i class="ri-function-add-fill"></i>}
               >
                 <MenuItem href='/dashboard/tambah-transaksi'>Tambah Transaksi</MenuItem>
-                <MenuItem href='/dashboard/jenissampah'>Jenis Sampah</MenuItem>
-                <MenuItem href='/dashboard/tambah-jenissampah'>Tambah Jenis Sampah</MenuItem>
+                <MenuItem href='/dashboard/jenis-sampah'>Jenis Sampah</MenuItem>
+                <MenuItem href='/dashboard/tambah-jenis-sampah'>Tambah Jenis Sampah</MenuItem>
               </SubMenu>
             </MenuSection>
             <SubMenu

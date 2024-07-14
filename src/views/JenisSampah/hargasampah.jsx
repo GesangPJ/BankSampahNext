@@ -25,7 +25,7 @@ const HalamanHargaSampah = () =>{
     if (session) {
       const fetchData = async () => {
         try {
-          const response = await fetch(`/api/jenis-sampah?userId=${session.user.id}`)
+          const response = await fetch(`/api/jenis-sampah`)
           const data = await response.json()
 
           // Tambahkan nomor urut

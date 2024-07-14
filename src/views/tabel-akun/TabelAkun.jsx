@@ -106,8 +106,8 @@ const TabelAkun = () => {
   return (
     <div className=' max-w-[100%]'>
       <h2 className='font-bold'>
-        Akun Karyawan
-      </h2>
+        Akun Anggota
+      </h2><br />
       <DataGrid
         rows={rows}
         sx={{
