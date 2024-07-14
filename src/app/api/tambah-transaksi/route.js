@@ -12,7 +12,7 @@ export const POST = async (req) => {
   console.log('Token:', token)
 
   if (!token) {
-    console.log('Unauthorized Access : API Tambah Kasbon')
+    console.log('Unauthorized Access: API Tambah Kasbon')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
@@ -21,22 +21,28 @@ export const POST = async (req) => {
     const { userId, idjenissampah, berat, adminId, keterangan } = await req.json()
 
     if (!userId || !idjenissampah || !berat || !adminId) {
-      return NextResponse.json({ error: "Semua bidang harus diisi." }, { status: 400 });
+      return NextResponse.json({ error: 'Semua bidang harus diisi.' }, { status: 400 })
     }
 
-      const hargajenissampah = await prisma.jenissampah.findMany({
-        where: {
-          id:idjenissampah,},
-        select:{
-          hargajenissampah,
-        },
-      })
+    const jenisSampah = await prisma.jenisSampah.findUnique({
+      where: {
+        id: idjenissampah,
+      },
+      select: {
+        hargajenissampah: true,
+      },
+    })
+
+    if (!jenisSampah) {
+      return NextResponse.json({ error: 'Jenis sampah tidak ditemukan.' }, { status: 404 })
+    }
+
+    const hargajenissampah = jenisSampah.hargajenissampah
 
     // Ambil tanggal dan waktu saat ini
     const now = new Date()
     const createdAt = now.toISOString()
     const hargasampah = hargajenissampah
-
     const HitungTotalHarga = hargasampah * berat
 
     try {
@@ -54,17 +60,17 @@ export const POST = async (req) => {
         },
       })
 
-      console.log('Transaksi dibuat :', transaksi)
+      console.log('Transaksi dibuat:', transaksi)
 
       return NextResponse.json(transaksi, { status: 201 })
     } catch (error) {
       console.error('Error membuat transaksi:', error)
 
-      return NextResponse.json({ error: "Transaksi sudah ada" }, { status: 400 })
+      return NextResponse.json({ error: 'Transaksi sudah ada.' }, { status: 400 })
     }
   } catch (error) {
     console.error('Error membuat transaksi:', error)
 
-    return NextResponse.json({ error: "Terjadi kesalahan saat memproses permintaan." }, { status: 500 })
+    return NextResponse.json({ error: 'Terjadi kesalahan saat memproses permintaan.' }, { status: 500 })
   }
 }
