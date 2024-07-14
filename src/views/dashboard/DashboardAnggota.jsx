@@ -210,7 +210,6 @@ const DashboardSampahAnggota = () => {
       { header: 'Harga per Kg', dataKey: 'hargasampah' },
       { header: 'Berat', dataKey: 'berat' },
       { header: 'Total Harga', dataKey: 'totalharga' },
-      {header: 'Keterangan', dataKey: 'keterangantransaksi'},
     ]
 
     const rowsForPDF = rows.map(row => ({
