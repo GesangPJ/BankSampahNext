@@ -17,7 +17,7 @@ const RootLayout = ({ children }) => {
   return (
     <html id='__next' dir={direction}>
       <head>
-        <title>Kasbon Manager</title>
+        <title>Bank Sampah Next</title>
       </head>
       <body className='flex is-full min-bs-full flex-auto flex-col'>
         <SessionProvider>
