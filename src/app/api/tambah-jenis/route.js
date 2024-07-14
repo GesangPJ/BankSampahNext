@@ -24,7 +24,7 @@ export const POST = async (req) => {
   try {
     const { nama, harga, keterangan} = await req.json()
 
-    if (!nama || !harga) {
+    if (!nama || !harga || !keterangan) {
       return NextResponse.json({ error: "Semua bidang harus diisi." }, { status: 400 })
     }
 
