@@ -42,6 +42,7 @@ const ViewTambahJenisSampah = () =>{
 
     const formData = {
       nama: data.get('nama'),
+      adminid: session.user.id,
       harga: parseInt(data.get('harga'),10),
       keterangan: data.get('keterangan'),
     }
@@ -61,7 +62,7 @@ const ViewTambahJenisSampah = () =>{
 
       if (response.ok) {
         setAlert('success')
-        setMessage('Akun berhasil didaftarkan!')
+        setMessage('Jenis Sampah berhasil ditambahkan!')
         formRef.current.reset() // Kosongkan form setelah berhasil didaftarkan
       } else {
         setAlert('error')
@@ -107,7 +108,7 @@ const ViewTambahJenisSampah = () =>{
                   name='harga'
                   fullWidth
                   type='number'
-                  label='Harga Sampah'
+                  label='Harga Sampah (Rp)'
                   placeholder='Harga Sampah per Kg'
                   InputProps={{
                     startAdornment: (
