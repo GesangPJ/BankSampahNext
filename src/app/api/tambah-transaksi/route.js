@@ -18,17 +18,26 @@ export const POST = async (req) => {
   }
 
   try {
-    const { userId, idjenissampah, hargajenissampah, berat, adminId, keterangan } = await req.json()
+    const { userId, idjenissampah, berat, adminId, keterangan } = await req.json()
 
-    if (!userId || !idjenissampah || !hargajenissampah || !berat || !adminId) {
+    if (!userId || !idjenissampah || !berat || !adminId) {
       return NextResponse.json({ error: "Semua bidang harus diisi." }, { status: 400 });
     }
+
+      const hargajenissampah = await prisma.jenissampah.findMany({
+        where: {
+          id:idjenissampah,},
+        select:{
+          hargajenissampah,
+        },
+      })
 
     // Ambil tanggal dan waktu saat ini
     const now = new Date()
     const createdAt = now.toISOString()
+    const hargasampah = hargajenissampah
 
-    const HitungTotalHarga = hargajenissampah * berat
+    const HitungTotalHarga = hargasampah * berat
 
     try {
       const transaksi = await prisma.transaksi.create({
@@ -38,8 +47,8 @@ export const POST = async (req) => {
           berat,
           totalharga: HitungTotalHarga,
           idjenissampah,
+          hargasampah,
           keterangantransaksi: keterangan,
-          metode,
           createdAt,
           updatedAt: createdAt,
         },
