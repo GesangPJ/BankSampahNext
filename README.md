@@ -12,7 +12,7 @@ Aplikasi Pengelola Bank Sampah berbasis NodeJS menggunakan Framework NextJS 14 F
 2. Next-Auth untuk Autentikasi.
 3. Json Web Token (JWT) untuk mengamankan session.
 4. MUI DataGrid untuk penyajian data lebih baik.
-5. Multi-Role account, akun terbagi menjadi 2 tipe : Admin dan Karyawan.
+5. Multi-Role account, akun terbagi menjadi 2 tipe : Admin dan Anggota.
 6. Bcrypt untuk password hashing.
 7. API Protection menggunakan JWT Token Validation.
 8. Pages protection menggunakan session.

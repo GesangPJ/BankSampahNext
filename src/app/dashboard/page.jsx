@@ -12,7 +12,7 @@ import { useSession } from 'next-auth/react'
 import DashboardSampahAdmin from '@/views/dashboard/DashboardAdmin'
 import DashboardSampahAnggota from '@/views/dashboard/DashboardAnggota'
 
-const DashboardAnalytics = () => {
+const DashboardBankSampah = () => {
   const { data: session, status } = useSession()
   const router = useRouter()
 
@@ -51,4 +51,4 @@ const DashboardAnalytics = () => {
   )
 }
 
-export default DashboardAnalytics
+export default DashboardBankSampah
