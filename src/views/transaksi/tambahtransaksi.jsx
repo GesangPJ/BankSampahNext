@@ -114,12 +114,11 @@ const KomponenTambahTransaksi = () =>{
           )}
           <form onSubmit={handleSubmit} ref={formRef}>
             <Grid container spacing={5}>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
+            <Grid item xs={12}>
+                <FormControl fullWidth required>
                   <InputLabel htmlFor="anggota">Pilih Anggota</InputLabel>
                   <Select
                     label="Pilih Anggota"
-                    defaultValue=""
                     inputProps={{
                       name: 'anggota',
                       id: 'anggota'
@@ -137,11 +136,10 @@ const KomponenTambahTransaksi = () =>{
                 </FormControl>
               </Grid>
               <Grid item xs={12}>
-                <FormControl fullWidth>
+                <FormControl fullWidth required>
                   <InputLabel htmlFor="jenissampah">Pilih Jenis Sampah</InputLabel>
                   <Select
                     label="Jenis Sampah"
-                    defaultValue=""
                     inputProps={{
                       name: 'jenissampah',
                       id: 'jenissampah'
