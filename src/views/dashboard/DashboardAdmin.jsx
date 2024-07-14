@@ -116,13 +116,13 @@ const DashboardSampahAdmin = () => {
     },
     {
       field: 'namajenissampah',
-      headerName: 'Jenis Sampah',
+      headerName: 'Sampah',
       headerClassName:'app-theme--header',
       width: 120,
     },
     {
       field: 'hargasampah',
-      headerName: 'Harga Sampah',
+      headerName: 'Harga',
       headerClassName:'app-theme--header',
       width: 120,
       renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
