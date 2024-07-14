@@ -33,7 +33,6 @@ export async function GET(req) {
       },
       select: {
         id: true,
-        userId: true,
         adminId: true,
         idjenissampah:true,
         hargasampah:true,
@@ -43,6 +42,11 @@ export async function GET(req) {
         createdAt: true,
         updatedAt: true,
         jenissampah: {select:{namajenissampah:true}},
+        admin: {
+          select: {
+            name: true,
+          },
+        },
       },
     })
 
@@ -51,15 +55,15 @@ export async function GET(req) {
       ...transaksi,
       createdAt: transaksi.createdAt.toISOString(),
       updatedAt: transaksi.updatedAt.toISOString(),
+      namaAdmin: transaksi.admin?.name || '-',
       namajenissampah: transaksi.jenissampah.namajenissampah
     }))
 
-    // Menghitung jumlah total, total setuju, total lunas, dan belum lunas
-    const TotalBerat = kasbons.reduce((acc, transaksi) => acc + transaksi.berat, 0)
+   // Menghitung jumlah total berat
+   const TotalBerat = transaksi.reduce((acc, transaksi) => acc + parseFloat(transaksi.berat), 0)
 
-    // Kasbon Yang Disetujui
-    const TotalBiaya = transaksi
-      .reduce((acc, transaksi) => acc + transaksi.totalharga, 0)
+   // Menghitung jumlah total biaya
+   const TotalBiaya = transaksi.reduce((acc, transaksi) => acc + parseFloat(transaksi.totalharga), 0)
 
     return NextResponse.json({
       transaksi: formattedTransaksi,
