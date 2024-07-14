@@ -216,7 +216,6 @@ const DashboardSampahAdmin = () => {
       { header: 'Harga per Kg', dataKey: 'hargasampah' },
       { header: 'Berat', dataKey: 'berat' },
       { header: 'Total Harga', dataKey: 'totalharga' },
-      {header: 'Keterangan', dataKey: 'keterangantransaksi'},
       { header: 'Nama Admin', dataKey: 'namaAdmin' },
     ]
 
@@ -225,10 +224,9 @@ const DashboardSampahAdmin = () => {
       updatedAt: formatDate(row.updatedAt),
       namaUser: row.namaUser,
       namajenissampah: row.namajenissampah,
-      hargasampah: row.hargasampah,
-      berat: row.berat,
+      hargasampah: formatCurrency(row.hargasampah),
+      berat: formatDecimal(row.berat),
       totalharga: formatCurrency(row.totalharga),
-      keterangan: truncateText(row.keterangantransaksi, 50),
       namaAdmin: row.namaAdmin
     }))
 
