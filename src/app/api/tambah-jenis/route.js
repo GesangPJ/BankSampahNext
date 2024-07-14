@@ -17,9 +17,9 @@ export const POST = async (req) => {
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
 
-  const { nama, harga, keterangan } = await req.json()
+  const { nama, harga, keterangan, adminid } = await req.json()
 
-  if (!nama || !harga || !keterangan) {
+  if (!nama || !harga || !keterangan || !adminid) {
     return NextResponse.json({ error: 'Semua bidang harus diisi.' }, { status: 400 })
   }
 
@@ -27,8 +27,9 @@ export const POST = async (req) => {
   const createdAt = now.toISOString()
 
   try {
-    const jenissampah = await prisma.jenissampah.create({
+    const jenissampah = await prisma.jenisSampah.create({
       data: {
+        adminId: adminid,
         namajenissampah: nama,
         hargajenissampah: parseInt(harga),
         keteranganjenissampah: keterangan,
@@ -37,7 +38,7 @@ export const POST = async (req) => {
       },
     })
 
-    await prisma.historyjenis.create({
+    await prisma.historyJenis.create({
       data: {
         namajenissampah: nama,
         hargajenis: parseInt(harga),
