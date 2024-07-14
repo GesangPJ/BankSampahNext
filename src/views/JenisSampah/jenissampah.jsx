@@ -7,6 +7,9 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
+import ListAltIcon from '@mui/icons-material/ListAlt'
+import DataObjectIcon from '@mui/icons-material/DataObject'
 import { jsPDF } from "jspdf"
 import autoTable from 'jspdf-autotable'
 import ExcelJS from 'exceljs'
@@ -77,7 +80,7 @@ const HalamanJenisSampah = () =>{
     if (session) {
       const fetchData = async () => {
         try {
-          const response = await fetch(`/api/jenis-sampah?userId=${session.user.id}`)
+          const response = await fetch(`/api/jenis-sampah`)
           const data = await response.json()
 
           // Tambahkan nomor urut
