@@ -116,7 +116,7 @@ const HalamanJenisSampah = () =>{
       field: 'keteranganjenissampah',
       headerName: 'Keterangan',
       headerClassName: 'app-theme--header',
-      width: 160,
+      width: 220,
     },
     {
       field: 'edit',
@@ -297,7 +297,7 @@ const HalamanJenisSampah = () =>{
           </Button>
         </DialogActions>
       </Dialog>
-      <div>
+      <div><br />
       <Box sx={{ display: 'flex', gap: 7, flexWrap: 'wrap' }}>
         <Button variant='outlined' color="error" size="large" startIcon={<PictureAsPdfIcon/>} sx={ { borderRadius: 30 } } onClick={handlePDF}>
           PDF Export
