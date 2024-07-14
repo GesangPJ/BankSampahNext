@@ -7,12 +7,7 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid'
 import { Button } from '@mui/material'
-import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
-import HighlightOffIcon from '@mui/icons-material/HighlightOff'
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
-import PauseCircleIcon from '@mui/icons-material/PauseCircle'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import ListAltIcon from '@mui/icons-material/ListAlt'
 import DataObjectIcon from '@mui/icons-material/DataObject'
@@ -20,8 +15,6 @@ import Typography from '@mui/material/Typography'
 import { jsPDF } from "jspdf"
 import autoTable from 'jspdf-autotable'
 import ExcelJS from 'exceljs'
-import JenisSampah from '@/app/dashboard/jenis-sampah/page'
-
 
 const truncateText = (text, maxLength) => {
   if (text.length <= maxLength) {
@@ -29,30 +22,6 @@ const truncateText = (text, maxLength) => {
   }
 
   return text.slice(0, maxLength) + '...'
-}
-
-const getStatusChip = (status) => {
-  switch (status) {
-    case 'BELUM':
-      return <Chip label="BELUM" color="warning" variant="outlined" icon= {<PauseCircleIcon/>} />
-    case 'SETUJU':
-      return <Chip label="SETUJU" color="success" variant="outlined" icon= {<CheckCircleOutlineIcon/>} />
-    case 'TOLAK':
-      return <Chip label="DITOLAK" color="error" variant="outlined"  icon= {<HighlightOffIcon/>} />
-    default:
-      return <Chip label="UNKNOWN" color="default" variant="outlined" />
-  }
-}
-
-const getBayarChip = (status) => {
-  switch (status) {
-    case 'BELUM':
-      return <Chip label="BELUM" color="error" variant="outlined" icon= {<ErrorOutlineIcon/>} />
-    case 'LUNAS':
-      return <Chip label="LUNAS" color="success" variant="outlined" icon= {<CheckCircleOutlineIcon/>} />
-    default:
-      return <Chip label="UNKNOWN" color="default" variant="outlined" />
-  }
 }
 
 const formatDate = (dateString) => {
