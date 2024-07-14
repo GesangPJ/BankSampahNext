@@ -14,7 +14,7 @@
     "build:icons": "tsx src/assets/iconify-icons/bundle-icons-css.js",
     "postinstall": "prisma generate && npm run build:icons",
     "seedadmin": "node prisma/seedAdmin.js",
-    "seedkaryawan": "node prisma/seedAnggota.js",
+    "seedanggota": "node prisma/seedAnggota.js",
     "deletetransaksi": "node prisma/deleteTransaksi.js"
   },
   "dependencies": {
