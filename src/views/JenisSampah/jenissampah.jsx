@@ -46,7 +46,7 @@ const HalamanJenisSampah = () =>{
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('/api/edit-jenissampah', {
+      const response = await fetch('/api/edit-jenis-sampah', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -57,16 +57,16 @@ const HalamanJenisSampah = () =>{
       const result = await response.json()
 
       if (response.ok) {
-        alert('Data Admin Berhasil diubah')
+        alert('Data jenis sampah berhasil diubah')
         setRows((prevRows) =>
           prevRows.map((row) =>
-            row.id === formData.userId
-              ? { ...row, name: formData.nama, email: formData.email }
+            row.id === formData.idjenissampah
+              ? { ...row, nama: formData.namajenissampah, harga: formData.hargajenissampah }
               : row
           )
         )
       } else {
-        alert(result.error || 'Ada kesalahan ketika mengganti data akun')
+        alert(result.error || 'Ada kesalahan ketika mengganti data jenis sampah')
       }
 
       handleClose()
@@ -123,7 +123,7 @@ const HalamanJenisSampah = () =>{
       headerName: 'Edit',
       headerClassName: 'app-theme--header',
       renderCell: (params) => (
-        <Button variant="contained" color="primary" onClick={() => handleEditClick(params.row)}>
+        <Button variant="contained" color="primary" onClick={() => handleClickOpen(params.row)}>
           Edit
         </Button>
       ),
