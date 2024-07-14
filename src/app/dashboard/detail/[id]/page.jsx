@@ -36,6 +36,16 @@ const formatCurrency = (amount) => {
   }).format(amount)
 }
 
+const formatDecimal = (number) => {
+  const parsedNumber = parseFloat(number)
+
+  if (isNaN(parsedNumber)) {
+    return '0.00';
+  }
+
+  return parsedNumber.toFixed(2)
+}
+
 const DetailPage = () => {
   const params = useParams()
   const id = params.id
@@ -105,7 +115,7 @@ const DetailPage = () => {
     { label: 'ID Anggota', value: data.userId },
     { label: 'Nama Anggota', value: data.namaAnggota },
     { label: 'Jenis Sampah', value: data.namajenissampah},
-    { label: 'Berat (Kg)', value: data.berat},
+    { label: 'Berat (Kg)', value: formatDecimal(data.berat)},
     { label: 'Total Harga', value: formatCurrency(data.totalharga) },
     { label: 'Keterangan', value: data.keterangantransaksi },
     { label: 'Nama Admin', value: data.namaAdmin },
