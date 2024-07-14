@@ -24,7 +24,7 @@ export const POST = async (req) => {
   try {
     const { nama, harga, keterangan} = await req.json()
 
-    if (!nama || !harga || !keterangan) {
+    if (!nama || !harga) {
       return NextResponse.json({ error: "Semua bidang harus diisi." }, { status: 400 })
     }
 
@@ -36,7 +36,7 @@ export const POST = async (req) => {
       const jenissampah = await prisma.jenissampah.create({
         data: {
           namajenissampah: nama,
-          hargajenissampah: harga,
+          hargajenissampah: parseInt(harga),
           keteranganjenissampah: keterangan,
           createdAt,
           updatedAt: createdAt,
