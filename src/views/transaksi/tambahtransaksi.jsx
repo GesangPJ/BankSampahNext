@@ -46,14 +46,23 @@ const KomponenTambahTransaksi = () =>{
       }
     }
 
+    if (alert) {
+      const timer = setTimeout(() => {
+        setAlert(null)
+        setMessage('')
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+
     fetchData()
-  }, [])
+  }, [alert])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     const data = new FormData(event.target)
 
-    if (!data.get('berat') || !data.get('keterangan') || !data.get('metode')) {
+    if (!data.get('berat') || !data.get('keterangan')) {
       setAlert('error')
       setMessage('Semua bidang harus diisi.')
 
@@ -63,7 +72,7 @@ const KomponenTambahTransaksi = () =>{
     const formData = {
       adminId: session.user.id,
       userId: parseInt(data.get('anggota')),
-      jenissampahid: parseInt(data.get('jenissampah')),
+      idjenissampah: parseInt(data.get('jenissampah')),
       berat: parseFloat(data.get('berat')),
       keterangan: data.get('keterangan'),
     }
@@ -81,11 +90,11 @@ const KomponenTambahTransaksi = () =>{
 
       if (response.ok) {
         setAlert('success')
-        setMessage('Permintaan kasbon berhasil dikirim!')
+        setMessage('Transaksi berhasil ditambahkan!')
         formRef.current.reset()
       } else {
         setAlert('error')
-        setMessage(result.error || 'Terjadi kesalahan saat mengirim data permintaan kasbon.')
+        setMessage(result.error || 'Terjadi kesalahan saat mengirim data transaksi.')
       }
     } catch (error) {
       setAlert('error')
@@ -183,7 +192,7 @@ const KomponenTambahTransaksi = () =>{
                 />
               </Grid>
               <Grid item xs={12} justifyContent="center" alignItems="center">
-                <Button variant="contained" type="submit">
+                <Button variant="contained" type="submit" sx={ { borderRadius: 30 } }>
                   Tambah Transaksi
                 </Button>
               </Grid>
