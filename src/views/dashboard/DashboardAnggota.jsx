@@ -44,6 +44,16 @@ const formatCurrency = (amount) => {
   }).format(amount)
 }
 
+const formatDecimal = (number) => {
+  const parsedNumber = parseFloat(number)
+
+  if (isNaN(parsedNumber)) {
+    return '0.00';
+  }
+
+  return parsedNumber.toFixed(2)
+}
+
 const DashboardSampahAnggota = () => {
   const router = useRouter()
   const { data: session } = useSession()
@@ -101,34 +111,43 @@ const DashboardSampahAnggota = () => {
     },
     {
       field: 'namajenissampah',
-      headerName: 'Jenis Sampah',
+      headerName: 'Sampah',
       headerClassName:'app-theme--header',
-      width: 160,
+      width: 120,
     },
     {
-      field: 'hargajenissampah',
-      headerName: 'Harga per Kg',
+      field: 'hargasampah',
+      headerName: 'Harga',
       headerClassName:'app-theme--header',
-      width: 160,
+      width: 120,
+      renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
     },
     {
-      field: 'beratsampah',
+      field: 'berat',
       headerName: 'Berat (Kg)',
       headerClassName:'app-theme--header',
       width: 100,
+      renderCell: (params) => <div>{formatDecimal(params.value)}</div>,
     },
     {
       field: 'totalharga',
       headerName: 'Harga Total',
       headerClassName:'app-theme--header',
-      width: 150,
+      width: 120,
+      renderCell: (params) => <div>{formatCurrency(params.value)}</div>,
     },
     {
       field: 'keterangantransaksi',
       headerName: 'Keterangan',
       headerClassName:'app-theme--header',
-      width: 150,
+      width: 160,
       renderCell: (params) => <div>{truncateText(params.value, 50)}</div>,
+    },
+    {
+      field: 'namaAdmin',
+      headerName: 'Admin',
+      headerClassName:'app-theme--header',
+      width: 120,
     },
     {
       field: 'detail',
@@ -279,7 +298,7 @@ const DashboardSampahAnggota = () => {
       <div>
         <Box>
           <Typography variant='subtitle1'>
-          Jumlah Total Berat Sampah : {formatCurrency(totals.TotalBerat)}
+          Jumlah Total Berat Sampah : {formatDecimal(totals.TotalBerat)} Kg
           </Typography><br />
           <Typography variant='subtitle1'>
             Jumlah Total Harga Sampah : {formatCurrency(totals.TotalBiaya)}
