@@ -77,7 +77,7 @@ const VerticalMenu = ({ scrollMenu }) => {
               >
                 <MenuItem href='/dashboard/tambah-transaksi'>Tambah Transaksi</MenuItem>
                 <MenuItem href='/dashboard/jenissampah'>Jenis Sampah</MenuItem>
-                <MenuItem href='/dashboard/tambah-jenissampah'>Tambah Jenis Sampah</MenuItem>
+                <MenuItem href='/dashboard/tambah-jenis-sampah'>Tambah Jenis Sampah</MenuItem>
               </SubMenu>
             </MenuSection>
             <SubMenu
