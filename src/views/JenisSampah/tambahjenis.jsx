@@ -41,7 +41,6 @@ const ViewTambahJenisSampah = () =>{
       name: data.get('nama'),
       harga: data.get('harga'),
       keterangan: data.get('keterangan'),
-      adminId: session.user.id,
     }
 
     try {
@@ -72,7 +71,7 @@ const ViewTambahJenisSampah = () =>{
   return(
     <div>
       <Card>
-        <CardHeader title='Registrasi Akun' />
+        <CardHeader title='Tambah Jenis Sampah' />
         <CardContent>
           {alert && (
             <Alert severity={alert} style={{ marginBottom: '1rem' }}>
