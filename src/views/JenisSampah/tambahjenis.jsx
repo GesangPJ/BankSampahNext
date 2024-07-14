@@ -2,8 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react'
 
-import { useRouter } from 'next/navigation'
-
 import { useSession } from 'next-auth/react'
 
 import Card from '@mui/material/Card'
@@ -13,21 +11,26 @@ import TextField from '@mui/material/TextField'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import InputAdornment from '@mui/material/InputAdornment'
-import Select from '@mui/material/Select'
-import InputLabel from '@mui/material/InputLabel'
-import FormControl from '@mui/material/FormControl'
 import Alert from '@mui/material/Alert'
 
 const ViewTambahJenisSampah = () =>{
-  const {data: session, status} = useSession()
+  const {data: session} = useSession()
   const [alert, setAlert] = useState(null)
   const [message, setMessage] = useState('')
   const formRef = useRef(null)
-  const router = useRouter()
 
   useEffect(() => {
 
-  }, [])
+    if (alert) {
+      const timer = setTimeout(() => {
+        setAlert(null)
+        setMessage('')
+      }, 5000)
+
+      return () => clearTimeout(timer)
+    }
+
+  }, [alert])
 
   if (!session) {
     return null
@@ -38,8 +41,8 @@ const ViewTambahJenisSampah = () =>{
     const data = new FormData(event.target)
 
     const formData = {
-      name: data.get('nama'),
-      harga: data.get('harga'),
+      nama: data.get('nama'),
+      harga: parseInt(data.get('harga'),10),
       keterangan: data.get('keterangan'),
     }
 
@@ -51,6 +54,8 @@ const ViewTambahJenisSampah = () =>{
         },
         body: JSON.stringify(formData),
       })
+
+      console.log('Jenis Sampah dikirim : ', formData)
 
       const result = await response.json()
 
@@ -83,7 +88,7 @@ const ViewTambahJenisSampah = () =>{
             <Grid item xs={12}>
                 <TextField
                   id='nama'
-                  name='name'
+                  name='nama'
                   fullWidth
                   label='Nama'
                   placeholder='Nama Jenis Sampah'
