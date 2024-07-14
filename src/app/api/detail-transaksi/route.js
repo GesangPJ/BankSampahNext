@@ -6,6 +6,7 @@ import { NextResponse } from "next/server"
 import { getToken } from 'next-auth/jwt'
 
 import prisma from "@/app/lib/prisma"
+import JenisSampah from "@/app/dashboard/jenis-sampah/page"
 
 export async function GET(req) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
@@ -30,7 +31,8 @@ export async function GET(req) {
       where: { id: parseInt(id) },
       include: {
         user: { select: { name: true } },
-        admin: { select: { name: true } }
+        admin: { select: { name: true } },
+        jenissampah: {select: {namajenissampah:true} },
       }
     })
 
@@ -43,7 +45,8 @@ export async function GET(req) {
       createdAt: transaksi.createdAt.toISOString(),
       updatedAt: transaksi.updatedAt.toISOString(),
       namaAnggota: transaksi.user?.name || "-",
-      namaAdmin: transaksi.admin?.name || "-"
+      namaAdmin: transaksi.admin?.name || "-",
+      namajenissampah: transaksi.jenissampah?.namajenissampah || "-"
     }
 
     console.log("Detail Transaksi :", formattedTransaksi)
