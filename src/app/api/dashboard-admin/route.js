@@ -63,12 +63,12 @@ export async function GET(req) {
       namajenissampah: transaksi.jenissampah.namajenissampah
     }))
 
-    // Menghitung jumlah total, total setuju, total lunas, dan belum lunas
-    const TotalBerat = transaksi.reduce((acc, transaksi) => acc + transaksi.berat, 0)
+    // Menghitung jumlah total berat
+    const TotalBerat = transaksi.reduce((acc, transaksi) => acc + parseFloat(transaksi.berat), 0)
 
-    // Kasbon Yang Disetujui
-    const TotalBiaya = transaksi
-      .reduce((acc, transaksi) => acc + transaksi.totalharga, 0)
+    // Menghitung jumlah total biaya
+    const TotalBiaya = transaksi.reduce((acc, transaksi) => acc + parseFloat(transaksi.totalharga), 0)
+
 
     return NextResponse.json({
       transaksi: formattedTransaksi,
