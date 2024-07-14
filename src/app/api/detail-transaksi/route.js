@@ -42,7 +42,7 @@ export async function GET(req) {
       ...transaksi,
       createdAt: transaksi.createdAt.toISOString(),
       updatedAt: transaksi.updatedAt.toISOString(),
-      namaKaryawan: transaksi.user?.name || "-",
+      namaAnggota: transaksi.user?.name || "-",
       namaAdmin: transaksi.admin?.name || "-"
     }
 
