@@ -217,10 +217,9 @@ const DashboardSampahAnggota = () => {
       no: row.no,
       updatedAt: formatDate(row.updatedAt),
       namajenissampah: row.namajenissampah,
-      hargasampah: row.hargasampah,
-      berat: row.berat,
+      hargasampah: formatCurrency(row.hargasampah),
+      berat: formatDecimal(row.berat),
       totalharga: formatCurrency(row.totalharga),
-      keterangan: truncateText(row.keterangantransaksi, 50),
     }))
 
     autoTable(doc, {
