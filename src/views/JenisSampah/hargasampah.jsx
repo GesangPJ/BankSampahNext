@@ -29,7 +29,7 @@ const HalamanHargaSampah = () =>{
           const data = await response.json()
 
           // Tambahkan nomor urut
-          const numberedData = data.kasbons.map((row, index) => ({ ...row, no: index + 1 }))
+          const numberedData = data.map((row, index) => ({ ...row, no: index + 1 }))
 
           setRows(numberedData)
 
@@ -61,7 +61,7 @@ const HalamanHargaSampah = () =>{
       field: 'keteranganjenissampah',
       headerName: 'Keterangan',
       headerClassName: 'app-theme--header',
-      width: 160,
+      width: 200,
     },
   ]
 
@@ -80,11 +80,6 @@ const HalamanHargaSampah = () =>{
         >
           <DataGrid
             rows={rows}
-            slots={{ toolbar: GridToolbar, printOptions:{
-              pageStyle: '.MuiDataGrid-root .MuiDataGrid-main { color: rgba(0, 0, 0, 0.87); }',
-              hideToolbar: true,
-              hideFooter: true,
-            } }}
             sx={{
               '@media print': {
                 '.MuiDataGrid-main': {
