@@ -19,7 +19,7 @@ export async function GET(req) {
 
 
   try {
-    const jenissampah = await prisma.jenissampah.findMany({
+    const jenissampah = await prisma.jenisSampah.findMany({
       select: {
         id: true,
         namajenissampah:true,
