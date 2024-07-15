@@ -58,8 +58,8 @@ const ResetPasswordKaryawan = () => {
 
       if (response.ok) {
         setStatus('success')
-        setMessage('Password Karyawan berhasil diganti!')
-        formRef.current.reset() // Kosongkan form setelah berhasil diganti
+        setMessage('Password Anggota berhasil diganti!')
+        formRef.current.reset()
       } else {
         setStatus('error')
         setMessage(result.error || 'Terjadi kesalahan saat mengganti password.')
@@ -73,7 +73,7 @@ const ResetPasswordKaryawan = () => {
   return (
     <div>
       <Card>
-        <CardHeader title='Reset Password Karyawan' />
+        <CardHeader title='Reset Password Anggota' />
         <CardContent>
           {status && (
             <Alert severity={status} style={{ marginBottom: '1rem' }}>
@@ -89,7 +89,7 @@ const ResetPasswordKaryawan = () => {
                   fullWidth
                   type='email'
                   label='Email'
-                  placeholder='Email Karyawan'
+                  placeholder='Email Anggota'
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position='start'>
