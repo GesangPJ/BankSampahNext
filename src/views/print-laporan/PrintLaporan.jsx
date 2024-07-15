@@ -35,7 +35,7 @@ const PrintLaporan = () => {
       const bulanTahun = dayjs(selectedDate).format('YYYY-MM')
 
       try {
-        const response = await fetch(`/api/laporan-kasbon?bulanTahun=${bulanTahun}`)
+        const response = await fetch(`/api/laporan-transaksi?bulanTahun=${bulanTahun}`)
 
         if (response.ok) {
           const data = await response.json()
