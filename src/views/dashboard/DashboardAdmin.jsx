@@ -296,7 +296,10 @@ const DashboardSampahAdmin = () => {
             checkboxSelection
             disableRowSelectionOnClick
             loading={loading}
-            getRowId={(row) => row.id} // Tetap gunakan ID asli untuk identifikasi baris
+            getRowId={(row) => row.id}
+            localeText={{
+              noRowsLabel: 'Data tidak ditemukan',
+            }}
           />
         </Box>
       </div>

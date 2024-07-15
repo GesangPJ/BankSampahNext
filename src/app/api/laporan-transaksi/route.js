@@ -16,7 +16,7 @@ export async function GET(req){
   console.log('Token:', token)
 
   if (!token) {
-    console.log('Unauthorized Access : API Ambil Laporan Bulanan Kasbon')
+    console.log('Unauthorized Access : API Ambil Laporan Bulanan Transaksi')
 
     return NextResponse.json({ error: 'Unauthorized Access' }, { status: 401 })
   }
@@ -27,7 +27,7 @@ export async function GET(req){
   const startDate = dayjs(bulanTahun).startOf('month').toDate()
   const endDate = dayjs(bulanTahun).endOf('month').toDate()
 
-  const kasbons = await prisma.kasbon.findMany({
+  const transaksi = await prisma.transaksi.findMany({
     where: {
       updatedAt: {
         gte: startDate,
@@ -40,30 +40,34 @@ export async function GET(req){
       id: true,
       userId: true,
       adminId: true,
-      jumlah: true,
-      status_r: true,
-      status_b: true,
-      keterangan: true,
-      metode: true,
+      hargasampah: true,
+      totalharga: true,
+      berat:true,
+      idjenissampah: true,
+      updatedAt:true,
+      keterangantransaksi: true,
+      jenissampah: {select:{namajenissampah:true}},
       user: {
         select: {
-          name: true, // Mengambil nama karyawan
+          name: true,
         },
       },
       admin: {
         select: {
-          name: true, // Mengambil nama admin
+          name: true,
         },
       },
     },
   })
 
-  const formattedKasbons = kasbons.map(kasbon => ({
-    ...kasbon,
-    namaKaryawan: kasbon.user?.name || '-',
-    namaAdmin: kasbon.admin?.name || '-',
+  const formattedTransaksi = transaksi.map(transaksi => ({
+    ...transaksi,
+    updatedAt: transaksi.updatedAt.toISOString(),
+    namaUser: transaksi.user?.name || '-',
+    namaAdmin: transaksi.admin?.name || '-',
+    namajenissampah: transaksi.jenissampah.namajenissampah
   }))
 
-  return NextResponse.json(formattedKasbons, {status:200})
+  return NextResponse.json(formattedTransaksi, {status:200})
 
 }
