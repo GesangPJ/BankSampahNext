@@ -44,6 +44,7 @@ export async function GET(req){
       totalharga: true,
       berat:true,
       idjenissampah: true,
+      updatedAt:true,
       keterangantransaksi: true,
       jenissampah: {select:{namajenissampah:true}},
       user: {
@@ -61,6 +62,7 @@ export async function GET(req){
 
   const formattedTransaksi = transaksi.map(transaksi => ({
     ...transaksi,
+    updatedAt: transaksi.updatedAt.toISOString(),
     namaUser: transaksi.user?.name || '-',
     namaAdmin: transaksi.admin?.name || '-',
     namajenissampah: transaksi.jenissampah.namajenissampah
