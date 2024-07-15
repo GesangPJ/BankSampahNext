@@ -57,9 +57,9 @@ const truncateText = (text, maxLength) => {
 
 const PrintLaporan = () => {
   const [selectedDate, setSelectedDate] = useState(null)
-  const [kasbonData, setKasbonData] = useState([])
   const [rows, setRows] = useState([])
   const [loading, setLoading] = useState(true)
+  const [searchConducted, setSearchConducted] = useState(false)
 
   const handleDateChange = (date) => {
     setSelectedDate(date)
@@ -78,9 +78,11 @@ const PrintLaporan = () => {
 
         setRows(numberedData)
 
-        setLoading(false)
       } catch (error) {
         console.error('Error mengambil data transaksi:', error)
+      } finally {
+        setLoading(false)
+        setSearchConducted(true)
       }
     } else {
       console.error('Pilih bulan dan tahun!')
@@ -234,7 +236,7 @@ const PrintLaporan = () => {
 
   return (
     <div>
-      <div className='my-[15px]'>
+      <div className='flex items-center space-x-4 my-[15px]'>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label={'"Bulan" dan "Tahun"'}
@@ -243,9 +245,6 @@ const PrintLaporan = () => {
             onChange={handleDateChange}
           />
         </LocalizationProvider>
-      </div>
-      <br />
-      <div>
         <Button
           variant='outlined'
           color='primary'
@@ -310,7 +309,10 @@ const PrintLaporan = () => {
             checkboxSelection
             disableRowSelectionOnClick
             loading={loading}
-            getRowId={(row) => row.id} // Tetap gunakan ID asli untuk identifikasi baris
+            getRowId={(row) => row.id}
+            localeText={{
+              noRowsLabel: searchConducted ? 'Data tidak ditemukan' : 'Data tidak ditemukan, pilih bulan dan tahun terlebih dahulu!',
+            }}
           />
         </Box>
       </div>
