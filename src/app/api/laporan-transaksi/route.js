@@ -59,10 +59,10 @@ export async function GET(req){
     },
   })
 
-  const formattedTransaksi = kasbons.map(transaksi => ({
+  const formattedTransaksi = transaksi.map(transaksi => ({
     ...transaksi,
-    namaUser: kasbon.user?.name || '-',
-    namaAdmin: kasbon.admin?.name || '-',
+    namaUser: transaksi.user?.name || '-',
+    namaAdmin: transaksi.admin?.name || '-',
     namajenissampah: transaksi.jenissampah.namajenissampah
   }))
 
