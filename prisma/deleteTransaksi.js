@@ -4,10 +4,10 @@ const prisma = new PrismaClient()
 
 async function main() {
   try {
-    // Delete all rows from the Kasbon table
-    await prisma.kasbon.deleteMany({})
 
-    console.log('Berhasil menghapus semua data di tabel Kasbon.')
+    await prisma.transaksi.deleteMany({})
+
+    console.log('Berhasil menghapus semua data di tabel Transaksi.')
 
   } catch (error) {
     console.error('Error deleting rows:', error)
