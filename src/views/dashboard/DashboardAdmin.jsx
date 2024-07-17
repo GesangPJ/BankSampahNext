@@ -110,7 +110,7 @@ const DashboardSampahAdmin = () => {
       renderCell: (params) => <div>{formatDate(params.value)}</div>,
     },{
       field: 'namaUser',
-      headerName: 'Nama User',
+      headerName: 'Nama Anggota',
       headerClassName:'app-theme--header',
       width: 120,
     },

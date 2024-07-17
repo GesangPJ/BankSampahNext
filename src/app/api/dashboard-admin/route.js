@@ -53,7 +53,6 @@ export async function GET(req) {
       },
     })
 
-    // Konversi tanggal ke format ISO dan tambahkan nama karyawan dan admin
     const formattedTransaksi = transaksi.map(transaksi => ({
       ...transaksi,
       createdAt: transaksi.createdAt.toISOString(),
