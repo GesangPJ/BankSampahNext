@@ -38,7 +38,7 @@ const HalamanBantuan = () =>{
                 <li><code>nama anggota :</code> Adalah nama Anggota terdaftar yang telah melakukan transaksi penjualan sampah.</li>
                 <li><code>sampah :</code> Berisi jenis sampah yang dijual oleh anggota.</li>
                 <li><code>harga :</code> Berisi nilai jual jenis sampah disaat transaksi dilakukan.</li>
-                <li><code>berat (kg) :</code> Berisi nilai berat sampah yang dijual ketika melakukan transaksi.</li>
+                <li><code>berat (Kg) :</code> Berisi nilai berat sampah yang dijual ketika melakukan transaksi.</li>
                 <li><code>harga total :</code> Adalah nilai harga total dimana anggota menerima pembayaran sesuai dengan nilai berat dikali dengan harga jenis sampah ketika transaksi dilakukan.</li>
                 <li><code>keterangan :</code> Adalah informasi tambahan yang dimasukkan oleh admin ketika transaksi dibuat.</li>
                 <li><code>admin :</code> Adalah nama Admin / Petugas yang membuat dan memasukkan data transaksi penjualan sampah.</li>

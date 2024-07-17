@@ -20,4 +20,20 @@ Aplikasi Pengelola Bank Sampah berbasis NodeJS menggunakan Framework NextJS 14 F
 
 ## Fitur Bank Sampah
 
-*Aplikasi masih dalam tahap pengembangan awal*.
+1. Kustomisasi jenis sampah.
+2. Transaksi Sampah.
+3. Laporan transaksi sampah per bulan.
+
+## Changelog
+
+### v.1.1.7 Update Patch #1
+
+- Update halaman bantuan.
+- Update halaman tentang.
+- Update dashboard admin.
+- Update API dashboard admin.
+
+### v.1.1.0 Release
+
+- Rilis awal aplikasi
+- Semua fitur bank sampah sudah bisa digunakan.
